@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Antarleen Consultancy & Advisory Services</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container navbar">
+    <div class="logo-wrap">
+      <img src="images/logo.jpg" alt="Antarleen logo" class="logo-img">
+    </div>
+    <nav class="navlinks">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#whyus">Why Us</a>
+      <a href="#ask">Ask Yourself</a>
+      <a href="#contact" class="cta">Connect</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <div class="hero-bg">
+    <img src="images/hero.svg" alt="">
+  </div>
+  <div class="container">
+    <h1>Enable people. Develop perspectives.</h1>
+    <p>Antarleen Consultancy & Advisory Services works with growth oriented organizations to strengthen their organizational foundation through clarity, structure, and disciplined execution.</p>
+  </div>
+</section>
+
+<!-- HOME SECOND HALF -->
+<section class="section">
+  <div class="container">
+    <h2>What We Enable</h2>
+    <div class="grid">
+      <div class="card">System & Process Implementation</div>
+      <div class="card">Performance Management</div>
+      <div class="card">People & Leadership Enablement</div>
+      <div class="card">Strategic Clarity & Direction</div>
+      <div class="card">Organizational Transformation</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="container">
+    <h2>About Us</h2>
+    <p>
+      Antarleen Consultancy & Advisory Services is a management consulting firm focused on enabling organizations to build structured, scalable, and self-reliant organizations.
+    </p>
+
+    <p>
+      Our purpose is, “To Enable people, Develop their Perspectives through Introspections….”
+    </p>
+
+    <p>
+      At Antarleen, our belief system is rooted in the idea of Paristhiti vs Manasthiti.
+    </p>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section class="section">
+  <div class="container">
+    <h2>Leadership & Team</h2>
+
+    <div class="team-leadership">
+      <div class="team-main fade-up">
+        <div class="card">
+          <h4>Dharmik M Shah — Managing Partner</h4>
+          <p>Masters in Finance & Business Management, Lawyer and Six Sigma Green Belt with 10+ years of experience.</p>
+        </div>
+      </div>
+
+      <div class="team-secondary">
+        <div class="card fade-up">
+          <h4>Krupi Parekh — Associate Consultant</h4>
+          <p>Business Coach with rich experience in Organisation Development and Strategic HR.</p>
+        </div>
+        <div class="card fade-up">
+          <h4>Dhaval Khandedia — Associate Consultant</h4>
+          <p>Electronics & Communication Engineer with 12+ years of experience in Consulting and Training.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="whyus" class="section">
+  <div class="container">
+    <h2>Why Us</h2>
+    <p>We follow a structured consulting methodology called BOTA – Build, Operate, Transfer, and Audit.</p>
+    <ul class="list">
+      <li><strong>Build:</strong> Customized systems & structures</li>
+      <li><strong>Operate:</strong> Implementation & handholding</li>
+      <li><strong>Transfer:</strong> Ownership to internal teams</li>
+      <li><strong>Audit:</strong> Review & continuous improvement</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="section">
+  <div class="container">
+    <h2>Services</h2>
+
+    <h3>Human Resource Management</h3>
+    <p>Operational HRM and Strategic HRM services for SMEs.</p>
+
+    <h3>Process Design & Implementation</h3>
+    <p>Standard Operating Procedures across functions.</p>
+
+    <h3>Strategic Management Consulting</h3>
+    <p>Strategic clarity, alignment and execution.</p>
+
+    <h3>Leadership Management & Development</h3>
+    <p>Coaching, leadership development and ownership building.</p>
+  </div>
+</section>
+
+<section id="ask" class="section">
+  <div class="container">
+    <h2>Ask Yourself</h2>
+
+    <!-- CATEGORY LIST -->
+    <div id="categoryList" class="grid">
+      <div class="card category-btn" data-cat="structure">Structure & Governance</div>
+      <div class="card category-btn" data-cat="people">People & Growth</div>
+      <div class="card category-btn" data-cat="performance">Performance Management</div>
+      <div class="card category-btn" data-cat="strategy">Strategy & Vision</div>
+      <div class="card category-btn" data-cat="process">Process & Control</div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <form id="questionForm" class="card" style="display:none; margin-top:30px;">
+      <h3 id="categoryTitle"></h3>
+      <div id="questions"></div>
+
+      <div style="display:flex; justify-content:space-between; margin-top:25px;">
+        <button type="button" id="backBtn" class="hero-secondary">Back</button>
+        <button type="submit" class="cta">Save Answers</button>
+      </div>
+    </form>
+
+    <!-- EMAIL + SUBMIT -->
+    <form id="finalForm" class="card" style="display:none; margin-top:30px;">
+      <label>
+        <strong>Email *</strong><br>
+        <input type="email" id="userEmail" required style="width:100%; padding:10px; margin-top:6px;">
+      </label>
+      <button type="submit" class="cta" style="margin-top:20px;">Submit Assessment</button>
+    </form>
+
+    <!-- SCORECARD -->
+    <div id="scorecard" class="card" style="display:none; margin-top:30px; text-align:center;">
+      <h3>Your Organizational Readiness Score</h3>
+      <div id="finalScore" style="font-size:48px; font-weight:700; color:#002060;">0%</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="container">
+    <h2>Connect With Us</h2>
+    <p>DOSE — Detailed Organisational Scrutiny Exercise</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <strong>Antarleen Consultancy & Advisory Services</strong>
+    <div>© Antarleen Consultancy</div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
