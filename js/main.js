@@ -192,7 +192,7 @@ function sendToGoogleSheet() {
     timestamp: new Date().toISOString()
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbwvqK_Pk_u4BiDb_qifmYx-9EYBBWyqzOu3TE26wo5GkxGNvz770eJW_aB4mwPJilSwoQ/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbzDQYJYJEqUAfNYjSOwdnKQlaQh0VgTW6QWg2vstgvbE5rRIihXzzgf6NVJfuZ5Bcc-WQ/exec", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
