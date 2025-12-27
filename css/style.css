@@ -164,3 +164,92 @@ body{
   opacity: 1;
   max-height: 300px;
 }
+/* ===============================
+   SERVICES TIMELINE (2-COLUMN)
+   =============================== */
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.timeline-row.reverse {
+  direction: rtl;
+}
+
+.timeline-row.reverse > * {
+  direction: ltr;
+}
+
+.timeline-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #002060;
+}
+
+.timeline-content {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.08);
+  line-height: 1.8;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .timeline-row {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-row.reverse {
+    direction: ltr;
+  }
+}
+/* CLIENT LOGOS */
+.logo-strip {
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;
+  padding: 24px 0;
+  align-items: center;
+  scroll-behavior: smooth;
+}
+
+.logo-strip::-webkit-scrollbar {
+  height: 6px;
+}
+
+.logo-strip::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.logo-strip img {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.75;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.logo-strip img:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+  transform: scale(1.08);
+}
+/* QUESTION OPTIONS – FORCE VERTICAL */
+.question .option {
+  display: block;
+  margin: 8px 0;
+  cursor: pointer;
+}

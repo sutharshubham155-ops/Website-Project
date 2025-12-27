@@ -1,29 +1,24 @@
 /************************************************
- * FINAL SAFE MAIN.JS – GOOGLE SHEET ENABLED
- * NO CRASH – NO BLANK PAGE
+ * FINAL PRODUCTION MAIN.JS – FIXED SCORING
  ************************************************/
 
-/* ========= GLOBAL STATE (IMPORTANT FIX) ========= */
-let answers = {};   // 👈 FIXED: global scope
+/* ========= GLOBAL STATE ========= */
+let answers = {};
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  console.log("main.js loaded successfully");
+  console.log("main.js loaded");
 
   /* ========= SECTION FADE-IN ========= */
   const sections = document.querySelectorAll(".section");
-
   const observer = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
+        if (entry.isIntersecting) entry.target.classList.add("visible");
       });
     },
     { threshold: 0.15 }
   );
-
   sections.forEach(sec => observer.observe(sec));
 
   /* ========= NAVBAR SCROLL HIGHLIGHT ========= */
@@ -54,9 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ========= LET’S INTROSPECT ========= */
 
-  const MAX_SCORE = 45;
   let currentIndex = 0;
-
   const order = ["structure", "people", "performance", "strategy", "process"];
 
   const data = {
@@ -108,8 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const finalForm = document.getElementById("finalForm");
   const scorecard = document.getElementById("scorecard");
 
-  if (!questionsDiv) return;
-
   function renderCategory(cat) {
     questionsDiv.innerHTML = "";
     let qNo = 1;
@@ -120,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="question">
           <p><strong>Q${qNo++}. ${item.q}</strong></p>
           ${item.options.map((opt, i) => `
-            <label>
+            <label class="option">
               <input type="radio" name="${name}" value="${3 - i}"
               ${answers[name] === (3 - i) ? "checked" : ""}>
               ${opt}
@@ -167,14 +158,23 @@ document.addEventListener("DOMContentLoaded", () => {
   finalForm.onsubmit = e => {
     e.preventDefault();
 
-    let total = 0;
-    Object.keys(answers).forEach(k => {
-      const [c, i] = k.split("-");
-      total += answers[k] * data[c][i].w;
+    let totalScore = 0;
+    let maxScore = 0;
+
+    Object.keys(data).forEach(cat => {
+      data[cat].forEach(q => {
+        maxScore += 3 * q.w;
+      });
     });
 
-    document.getElementById("finalScore").innerText =
-      Math.round((total / MAX_SCORE) * 100) + "%";
+    Object.keys(answers).forEach(k => {
+      const [c, i] = k.split("-");
+      totalScore += answers[k] * data[c][i].w;
+    });
+
+    const percentage = Math.round((totalScore / maxScore) * 100);
+
+    document.getElementById("finalScore").innerText = percentage + "%";
 
     finalForm.classList.add("hidden");
     scorecard.classList.remove("hidden");
@@ -184,19 +184,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-/* ========= GOOGLE SHEET SUBMIT ========= */
+/* ========= GOOGLE SHEET (NO-CORS SAFE) ========= */
 function sendToGoogleSheet() {
-  const payload = {
-    email: document.getElementById("userEmail").value,
-    answers: answers,
-    timestamp: new Date().toISOString()
-  };
+  fetch(
+    "https://script.google.com/macros/s/AKfycbzDQYJYJEqUAfNYjSOwdnKQlaQh0VgTW6QWg2vstgvbE5rRIihXzzgf6NVJfuZ5Bcc-WQ/exec",
+    {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({
+        email: document.getElementById("userEmail").value,
+        answers,
+        timestamp: new Date().toISOString()
+      })
+    }
+  );
 
-  fetch("https://script.google.com/macros/s/AKfycbzDQYJYJEqUAfNYjSOwdnKQlaQh0VgTW6QWg2vstgvbE5rRIihXzzgf6NVJfuZ5Bcc-WQ/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  })
-  .then(() => console.log("Data sent to Google Sheet"))
-  .catch(err => console.error("Sheet error:", err));
+  console.log("Assessment submitted");
 }
