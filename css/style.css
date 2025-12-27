@@ -253,3 +253,210 @@ body{
   margin: 8px 0;
   cursor: pointer;
 }
+/* ===============================
+   GLOBAL CENTER ALIGN – FULL SITE
+   =============================== */
+
+body,
+section,
+header,
+footer,
+.container,
+.narrow,
+.hero,
+.card,
+.interactive-card,
+.question,
+.tabs,
+.tab,
+.primary-btn,
+.secondary-btn,
+.nav,
+.nav a,
+.logo,
+.logo-strip,
+.scorecard,
+.form-actions,
+label,
+p,
+h1, h2, h3, h4, h5, h6,
+ul, li {
+  text-align: center;
+}
+
+/* Center radio options vertically & text centered */
+.question label.option {
+  display: block;
+  text-align: center;
+}
+
+/* Center inputs & buttons */
+input,
+button {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+/* Center navbar items */
+.nav {
+  justify-content: center;
+}
+
+/* Center logo strip */
+.logo-strip {
+  justify-content: center;
+}
+/* ===============================
+   WHY US – BOTA GRID FIX
+   =============================== */
+
+.bota-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  margin-top: 40px;
+}
+
+/* Ensure cards don’t force wrap */
+.bota-grid .interactive-card {
+  min-width: 0;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .bota-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .bota-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* ===============================
+   SERVICES – 3 x 3 GRID FIX
+   =============================== */
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* ===============================
+   SERVICES TIMELINE – FINAL FIX
+   =============================== */
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  margin-top: 60px;
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 40px;
+}
+
+/* DEFAULT: title LEFT, content RIGHT */
+.timeline-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #002060;
+  text-align: right;
+}
+
+.timeline-content {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.08);
+  text-align: left;
+}
+
+/* REVERSED: content LEFT, title RIGHT */
+.timeline-row.reverse {
+  grid-template-columns: 1fr 1fr;
+}
+
+.timeline-row.reverse .timeline-title {
+  grid-column: 2;
+  text-align: left;
+}
+
+.timeline-row.reverse .timeline-content {
+  grid-column: 1;
+  text-align: right;
+}
+
+/* MOBILE STACK */
+@media (max-width: 768px) {
+  .timeline-row,
+  .timeline-row.reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-title,
+  .timeline-content {
+    grid-column: 1 !important;
+    text-align: center !important;
+  }
+}
+/* ===============================
+   SERVICES PAGE – CENTER ALIGN CONTENT
+   =============================== */
+
+/* Center align entire services timeline section */
+.timeline {
+  text-align: center;
+}
+
+/* Titles */
+.timeline-title {
+  text-align: center !important;
+}
+
+/* Content boxes */
+.timeline-content {
+  text-align: center !important;
+}
+
+/* Ensure reverse rows also stay centered */
+.timeline-row.reverse .timeline-content,
+.timeline-row.reverse .timeline-title {
+  text-align: center !important;
+}
+
+/* Improve readability when centered */
+.timeline-content p {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 720px;
+}
+
+/* Mobile safety */
+@media (max-width: 768px) {
+  .timeline-title,
+  .timeline-content {
+    text-align: center !important;
+  }
+}
