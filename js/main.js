@@ -1,198 +1,40 @@
-document.addEventListener("DOMContentLoaded", function () {
+/************************************************
+ * FINAL SAFE MAIN.JS – GOOGLE SHEET ENABLED
+ * NO CRASH – NO BLANK PAGE
+ ************************************************/
 
-  const MAX_SCORE = 45;
-  const answers = {};
+/* ========= GLOBAL STATE (IMPORTANT FIX) ========= */
+let answers = {};   // 👈 FIXED: global scope
 
-  const data = {
-    structure: [
-      { q:"Do you have a clear, well-defined organizational structure with documented roles and accountability?", w:1.2,
-        options:[
-          {text:"Well-defined & documented structure, roles & JDs",v:3},
-          {text:"Partially defined structure & roles / JDs",v:2},
-          {text:"No clear structure or JDs",v:1}
-        ]},
-      { q:"Is there a structured and effective communication & reporting mechanism across departments?", w:1,
-        options:[
-          {text:"Structured & consistent",v:3},
-          {text:"Informal but works",v:2},
-          {text:"No clarity",v:1}
-        ]},
-      { q:"How are day-to-day operational decisions taken in the organization?", w:1.1,
-        options:[
-          {text:"Delegated & system-driven",v:3},
-          {text:"Mixed / partially centralized",v:2},
-          {text:"Highly centralized / unclear",v:1}
-        ]}
-    ],
-    people: [
-      { q:"Are employees clearly aware of their growth path and career progression?", w:1,
-        options:[
-          {text:"Clear growth roadmap",v:3},
-          {text:"Some clarity",v:2},
-          {text:"No clarity",v:1}
-        ]},
-      { q:"Do you have a strong and identifiable team of A-grade performers?", w:1.2,
-        options:[
-          {text:"Strong A-grade team",v:3},
-          {text:"Average performers",v:2},
-          {text:"Weak performance culture",v:1}
-        ]},
-      { q:"How frequently do you engage your team in capability building and brainstorming sessions?", w:0.8,
-        options:[
-          {text:"Weekly / Monthly",v:3},
-          {text:"Quarterly",v:2},
-          {text:"Rare / Never",v:1}
-        ]}
-    ],
-    performance: [
-      { q:"Does each employee contribute meaningfully to organizational growth in a measurable way?", w:1.2,
-        options:[
-          {text:"Measured & consistent",v:3},
-          {text:"Inconsistent measurement",v:2},
-          {text:"Not measured",v:1}
-        ]},
-      { q:"Do you have a defined and structured performance evaluation system?", w:1.3,
-        options:[
-          {text:"Defined PMS with periodic appraisals",v:3},
-          {text:"Informal / irregular reviews",v:2},
-          {text:"No evaluation system",v:1}
-        ]},
-      { q:"Do you track employee-wise profitability or productivity regularly?", w:1.1,
-        options:[
-          {text:"Tracked regularly",v:3},
-          {text:"Tracked sometimes",v:2},
-          {text:"Not tracked",v:1}
-        ]}
-    ],
-    strategy: [
-      { q:"How clearly is the organizational vision defined and communicated?", w:1.2,
-        options:[
-          {text:"3+ years clear vision",v:3},
-          {text:"1–2 years basic vision",v:2},
-          {text:"No vision",v:1}
-        ]},
-      { q:"To what extent are employees aligned with the organizational vision?", w:1,
-        options:[
-          {text:"Fully aligned workforce",v:3},
-          {text:"Partially aligned",v:2},
-          {text:"Not aligned",v:1}
-        ]},
-      { q:"Do you have a clear 360° action-oriented strategic plan?", w:1.3,
-        options:[
-          {text:"Clear 360° plan",v:3},
-          {text:"Partial plan",v:2},
-          {text:"No plan",v:1}
-        ]},
-      { q:"How structured is your approach to strategy planning for the upcoming quarter/year?", w:1.1,
-        options:[
-          {text:"Planned with clear timelines",v:3},
-          {text:"Roughly planned",v:2},
-          {text:"Not planned",v:1}
-        ]}
-    ],
-    process: [
-      { q:"Do you have well-defined SOPs for all critical departments?", w:1.3,
-        options:[
-          {text:"Defined for all departments",v:3},
-          {text:"Defined for few",v:2},
-          {text:"No SOPs",v:1}
-        ]},
-      { q:"Do you conduct regular process audits to ensure adherence and improvement?", w:1.2,
-        options:[
-          {text:"Regular audits",v:3},
-          {text:"Occasional audits",v:2},
-          {text:"No audits",v:1}
-        ]}
-    ]
-  };
+document.addEventListener("DOMContentLoaded", () => {
 
-  const categoryList = document.getElementById("categoryList");
-  const questionForm = document.getElementById("questionForm");
-  const finalForm = document.getElementById("finalForm");
-  const scorecard = document.getElementById("scorecard");
-  const questionsDiv = document.getElementById("questions");
-  const categoryTitle = document.getElementById("categoryTitle");
+  console.log("main.js loaded successfully");
 
-  document.querySelectorAll(".category-btn").forEach(btn=>{
-    btn.onclick=()=>loadCategory(btn.dataset.cat);
-  });
+  /* ========= SECTION FADE-IN ========= */
+  const sections = document.querySelectorAll(".section");
 
-  function loadCategory(cat){
-    categoryList.classList.add("hidden");
-    questionForm.classList.remove("hidden");
-    categoryTitle.textContent=cat.replace(/^\w/,c=>c.toUpperCase());
-    questionsDiv.innerHTML="";
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
 
-    data[cat].forEach((item,idx)=>{
-      questionsDiv.innerHTML+=`
-        <div class="question">
-          <p>${item.q}</p>
-          ${item.options.map(o=>`
-            <label><input type="radio" name="${cat}-${idx}" value="${o.v}"> ${o.text}</label>
-          `).join("")}
-        </div>`;
-    });
-  }
+  sections.forEach(sec => observer.observe(sec));
 
-  document.getElementById("backBtn").onclick=()=>{
-    questionForm.classList.add("hidden");
-    categoryList.classList.remove("hidden");
-  };
+  /* ========= NAVBAR SCROLL HIGHLIGHT ========= */
+  const navLinks = document.querySelectorAll(".nav a");
 
-  questionForm.onsubmit=e=>{
-    e.preventDefault();
-    const checked=questionForm.querySelectorAll("input:checked");
-    const total=questionForm.querySelectorAll(".question").length;
-    if(checked.length!==total) return alert("All questions are mandatory.");
-
-    checked.forEach(i=>answers[i.name]=+i.value);
-
-    questionForm.classList.add("hidden");
-    categoryList.classList.remove("hidden");
-
-    if(Object.keys(answers).length===15){
-      categoryList.classList.add("hidden");
-      finalForm.classList.remove("hidden");
-    }
-  };
-
-  finalForm.onsubmit=e=>{
-    e.preventDefault();
-    let score=0;
-    Object.keys(answers).forEach(k=>{
-      const [c,i]=k.split("-");
-      score+=answers[k]*data[c][i].w;
-    });
-    document.getElementById("finalScore").textContent=Math.round(score/MAX_SCORE*100)+"%";
-    finalForm.classList.add("hidden");
-    scorecard.classList.remove("hidden");
-  };
-
-});
-// Enable tap-to-expand on mobile for interactive cards
-document.querySelectorAll(".interactive-card").forEach(card => {
-  card.addEventListener("click", () => {
-    card.classList.toggle("active");
-  });
-});
-/* ===============================
-   NAVBAR SCROLL HIGHLIGHT – GUARANTEED
-   =============================== */
-
-(function () {
-  const navLinks = document.querySelectorAll(".navlinks a");
-  const sections = document.querySelectorAll("section[id]");
-
-  if (!navLinks.length || !sections.length) return;
-
-  function onScroll() {
-    let scrollPos = window.scrollY + 150;
+  window.addEventListener("scroll", () => {
+    let scrollPos = window.scrollY + 160;
     let currentId = "";
 
-    sections.forEach(section => {
-      if (scrollPos >= section.offsetTop) {
-        currentId = section.id;
-      }
+    sections.forEach(sec => {
+      if (scrollPos >= sec.offsetTop) currentId = sec.id;
     });
 
     navLinks.forEach(link => {
@@ -201,40 +43,160 @@ document.querySelectorAll(".interactive-card").forEach(card => {
         link.classList.add("active");
       }
     });
+  });
+
+  /* ========= INTERACTIVE CARDS ========= */
+  document.querySelectorAll(".interactive-card").forEach(card => {
+    card.addEventListener("click", () => {
+      card.classList.toggle("active");
+    });
+  });
+
+  /* ========= LET’S INTROSPECT ========= */
+
+  const MAX_SCORE = 45;
+  let currentIndex = 0;
+
+  const order = ["structure", "people", "performance", "strategy", "process"];
+
+  const data = {
+    structure: [
+      { q:"Do you have a clear, well-defined organizational structure with documented roles and accountability?", w:1.2,
+        options:["Well-defined & documented structure, roles & JDs","Partially defined structure & roles / JDs","No clear structure or JDs"] },
+      { q:"Is there a structured and effective communication & reporting mechanism across departments?", w:1,
+        options:["Structured & consistent","Informal but works","No clarity"] },
+      { q:"How are day-to-day operational decisions taken in the organization?", w:1.1,
+        options:["Delegated & system-driven","Mixed / partially centralized","Highly centralized / unclear"] }
+    ],
+    people: [
+      { q:"Are employees clearly aware of their growth path and career progression?", w:1,
+        options:["Clear growth roadmap","Some clarity","No clarity"] },
+      { q:"Do you have a strong and identifiable team of A-grade performers?", w:1.2,
+        options:["Strong A-grade team","Average performers","Weak performance culture"] },
+      { q:"How frequently do you engage your team in capability building and brainstorming sessions?", w:0.8,
+        options:["Weekly / Monthly","Quarterly","Rare / Never"] }
+    ],
+    performance: [
+      { q:"Does each employee contribute meaningfully to organizational growth in a measurable way?", w:1.2,
+        options:["Measured & consistent","Inconsistent measurement","Not measured"] },
+      { q:"Do you have a defined and structured performance evaluation system?", w:1.3,
+        options:["Defined PMS with periodic appraisals","Informal / irregular reviews","No evaluation system"] },
+      { q:"Do you track employee-wise profitability or productivity regularly?", w:1.1,
+        options:["Tracked regularly","Tracked sometimes","Not tracked"] }
+    ],
+    strategy: [
+      { q:"How clearly is the organizational vision defined and communicated?", w:1.2,
+        options:["3+ years clear vision","1–2 years basic vision","No vision"] },
+      { q:"To what extent are employees aligned with the organizational vision?", w:1,
+        options:["Fully aligned workforce","Partially aligned","Not aligned"] },
+      { q:"Do you have a clear 360° action-oriented strategic plan?", w:1.3,
+        options:["Clear 360° plan","Partial plan","No plan"] },
+      { q:"How structured is your approach to strategy planning for the upcoming quarter/year?", w:1.1,
+        options:["Planned with clear timelines","Roughly planned","Not planned"] }
+    ],
+    process: [
+      { q:"Do you have well-defined SOPs for all critical departments?", w:1.3,
+        options:["Defined for all departments","Defined for few","No SOPs"] },
+      { q:"Do you conduct regular process audits to ensure adherence and improvement?", w:1.2,
+        options:["Regular audits","Occasional audits","No audits"] }
+    ]
+  };
+
+  const questionsDiv = document.getElementById("questions");
+  const tabs = document.querySelectorAll(".tab");
+  const questionForm = document.getElementById("questionForm");
+  const finalForm = document.getElementById("finalForm");
+  const scorecard = document.getElementById("scorecard");
+
+  if (!questionsDiv) return;
+
+  function renderCategory(cat) {
+    questionsDiv.innerHTML = "";
+    let qNo = 1;
+
+    data[cat].forEach((item, idx) => {
+      const name = `${cat}-${idx}`;
+      questionsDiv.innerHTML += `
+        <div class="question">
+          <p><strong>Q${qNo++}. ${item.q}</strong></p>
+          ${item.options.map((opt, i) => `
+            <label>
+              <input type="radio" name="${name}" value="${3 - i}"
+              ${answers[name] === (3 - i) ? "checked" : ""}>
+              ${opt}
+            </label>
+          `).join("")}
+        </div>
+      `;
+    });
   }
 
-  window.addEventListener("scroll", onScroll);
-  window.addEventListener("load", onScroll);
-})();
-/* ===============================
-   NAVBAR SCROLL HIGHLIGHT (FINAL FIX)
-   =============================== */
+  renderCategory(order[currentIndex]);
 
-(function () {
-  const navLinks = document.querySelectorAll(".nav a");
-  const sections = document.querySelectorAll("section[id]");
+  tabs.forEach((tab, idx) => {
+    tab.onclick = () => {
+      currentIndex = idx;
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      renderCategory(order[currentIndex]);
+    };
+  });
 
-  if (!navLinks.length || !sections.length) return;
+  questionForm.onsubmit = e => {
+    e.preventDefault();
 
-  function highlightNav() {
-    let scrollPos = window.scrollY + 160; // header offset
-    let currentSection = sections[0].id;
+    const currentCat = order[currentIndex];
+    const checked = questionForm.querySelectorAll("input:checked");
 
-    sections.forEach(section => {
-      if (scrollPos >= section.offsetTop) {
-        currentSection = section.id;
-      }
+    if (checked.length !== data[currentCat].length) {
+      alert("All questions are mandatory.");
+      return;
+    }
+
+    checked.forEach(r => answers[r.name] = Number(r.value));
+
+    if (currentIndex < order.length - 1) {
+      currentIndex++;
+      tabs[currentIndex].click();
+    } else {
+      questionForm.classList.add("hidden");
+      finalForm.classList.remove("hidden");
+    }
+  };
+
+  finalForm.onsubmit = e => {
+    e.preventDefault();
+
+    let total = 0;
+    Object.keys(answers).forEach(k => {
+      const [c, i] = k.split("-");
+      total += answers[k] * data[c][i].w;
     });
 
-    navLinks.forEach(link => {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === "#" + currentSection) {
-        link.classList.add("active");
-      }
-    });
-  }
+    document.getElementById("finalScore").innerText =
+      Math.round((total / MAX_SCORE) * 100) + "%";
 
-  window.addEventListener("scroll", highlightNav);
-  window.addEventListener("load", highlightNav);
-})();
+    finalForm.classList.add("hidden");
+    scorecard.classList.remove("hidden");
 
+    sendToGoogleSheet();
+  };
+
+});
+
+/* ========= GOOGLE SHEET SUBMIT ========= */
+function sendToGoogleSheet() {
+  const payload = {
+    email: document.getElementById("userEmail").value,
+    answers: answers,
+    timestamp: new Date().toISOString()
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbwvqK_Pk_u4BiDb_qifmYx-9EYBBWyqzOu3TE26wo5GkxGNvz770eJW_aB4mwPJilSwoQ/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => console.log("Data sent to Google Sheet"))
+  .catch(err => console.error("Sheet error:", err));
+}
