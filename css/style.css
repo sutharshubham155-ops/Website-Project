@@ -83,6 +83,10 @@ body{
   padding:26px;
   border-radius:16px;
   box-shadow:0 14px 34px rgba(0,0,0,.08);
+  min-height:320px;              /* NEW */
+  display:flex;                  /* NEW */
+  flex-direction:column;         /* NEW */
+  justify-content:flex-start;
 }
 
 .tabs{
@@ -141,13 +145,17 @@ body{
   justify-content:space-between;
 }
 
-.card-detail {
+.card-detail{
   opacity:0;
   max-height:0;
+  overflow:hidden;               /* NEW */
+  transition:all .35s ease;
 }
-.interactive-card:hover .card-detail {
+
+.interactive-card:hover .card-detail,
+.interactive-card.active .card-detail{
   opacity:1;
-  max-height:200px;
+  max-height:500px;              /* NEW */
 }
 .interactive-card {
   transition: transform .35s ease, box-shadow .35s ease, background .35s ease;
@@ -304,8 +312,17 @@ button {
 }
 
 /* Center logo strip */
-.logo-strip {
-  justify-content: center;
+.logo-strip img{
+  height:70px;
+  width:auto;
+  object-fit:contain;
+  filter:none;          /* FIX */
+  opacity:1;            /* FIX */
+  transition:transform .3s ease;
+}
+
+.logo-strip img:hover{
+  transform:scale(1.06); /* subtle zoom only */
 }
 /* ===============================
    WHY US – BOTA GRID FIX
@@ -421,15 +438,6 @@ button {
     text-align: center !important;
   }
 }
-/* ===============================
-   SERVICES PAGE – CENTER ALIGN CONTENT
-   =============================== */
-
-/* Center align entire services timeline section */
-.timeline {
-  text-align: center;
-}
-
 /* Titles */
 .timeline-title {
   text-align: center !important;
@@ -460,3 +468,497 @@ button {
     text-align: center !important;
   }
 }
+
+p,
+li,
+.timeline-content,
+.card-detail,
+.question,
+label {
+  text-align: justify;
+}
+
+/* Alternate service card colors */
+.services-grid .interactive-card:nth-child(even){
+  background:#002060;
+  color:#ffffff;
+}
+
+.services-grid .interactive-card:nth-child(even) h4,
+.services-grid .interactive-card:nth-child(even) p,
+.services-grid .interactive-card:nth-child(even) a{
+  color:#ffffff;
+}
+/* ===============================
+   TEXT ALIGN FIX (JUSTIFY)
+   =============================== */
+
+/* Let’s Introspect questions & options */
+#introspect,
+#introspect p,
+#introspect label,
+#introspect .question {
+  text-align: justify;
+}
+
+/* Service page content */
+.timeline,
+.timeline-content,
+.timeline-content p {
+  text-align: justify;
+}
+
+/* Service cards short text */
+#services .card-detail p {
+  text-align: justify;
+}
+/* ===============================
+   SERVICES CARD SIZE FIX
+   =============================== */
+
+#services .interactive-card {
+  padding: 18px;              /* smaller padding */
+  min-height: auto;           /* remove forced height */
+}
+
+#services .interactive-card h4 {
+  font-size: 18px;            /* tighter heading */
+  margin-bottom: 8px;
+}
+
+#services .card-detail {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+/* Prevent over-expansion on hover */
+#services .interactive-card:hover .card-detail {
+  max-height: 160px;
+}
+/* =========================================
+   FORCE JUSTIFY – SERVICES PAGE (FINAL)
+   ========================================= */
+
+/* Entire services page */
+body.services-page * {
+  text-align: justify !important;
+}
+
+/* Timeline content specifically */
+.timeline-content,
+.timeline-content p,
+.timeline-title,
+.timeline-title h3,
+.timeline-title h4 {
+  text-align: justify !important;
+}
+
+/* Remove accidental center alignment */
+.timeline,
+.timeline-row,
+.timeline-row * {
+  text-align: justify !important;
+}
+
+/* =========================================
+   SERVICES TIMELINE – LEFT / RIGHT FIX
+   ========================================= */
+
+.timeline-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+/* Title column */
+.timeline-title {
+  flex: 0 0 35%;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* Content column */
+.timeline-content {
+  flex: 0 0 65%;
+  text-align: justify;
+}
+
+/* 🔁 REVERSED ROWS */
+.timeline-row.reverse {
+  flex-direction: row-reverse;
+}
+
+/* Reverse title alignment */
+.timeline-row.reverse .timeline-title {
+  text-align: right;
+}
+
+/* Reverse content alignment */
+.timeline-row.reverse .timeline-content {
+  text-align: justify;
+}
+/* =========================================
+   SERVICES TIMELINE – MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+  .timeline-row,
+  .timeline-row.reverse {
+    flex-direction: column;
+  }
+
+  .timeline-title,
+  .timeline-content {
+    flex: 100%;
+    text-align: justify;
+  }
+
+  .timeline-title {
+    text-align: left;
+  }
+}
+/* =========================================
+   SERVICES TIMELINE – SIZE & OVERFLOW FIX
+   ========================================= */
+
+/* Prevent horizontal scrolling globally */
+body {
+  overflow-x: hidden;
+}
+
+/* Timeline container safety */
+.timeline {
+  max-width: 1100px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+/* Timeline row */
+.timeline-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;               /* reduced gap */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Title column – smaller */
+.timeline-title {
+  flex: 0 0 30%;           /* ⬅ reduced from 35% */
+  max-width: 30%;
+  font-weight: 700;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+/* Content column – controlled */
+.timeline-content {
+  flex: 0 0 70%;           /* ⬅ reduced from 65% */
+  max-width: 70%;
+  text-align: justify;
+  box-sizing: border-box;
+}
+
+/* Reverse rows */
+.timeline-row.reverse {
+  flex-direction: row-reverse;
+}
+
+.timeline-row.reverse .timeline-title {
+  text-align: right;
+}
+
+/* =========================================
+   MOBILE – STACKED & COMPACT
+   ========================================= */
+@media (max-width: 768px) {
+  .timeline-row,
+  .timeline-row.reverse {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .timeline-title,
+  .timeline-content {
+    flex: 100%;
+    max-width: 100%;
+    text-align: justify;
+  }
+
+  .timeline-title {
+    text-align: left;
+  }
+}
+/* =========================================
+   SERVICES TIMELINE – HARD WIDTH LOCK
+   (MATCHES PREVIOUS WORKING FILE)
+   ========================================= */
+
+body {
+  overflow-x: hidden;
+}
+
+/* Timeline wrapper */
+.timeline {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Row */
+.timeline-row {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 40px;
+}
+
+/* 🔒 TITLE COLUMN – LOCKED */
+.timeline-title {
+  width: 32%;
+  max-width: 32%;
+  min-width: 32%;
+  flex-shrink: 0;          /* ⬅ IMPORTANT */
+  box-sizing: border-box;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* 🔒 CONTENT COLUMN – LOCKED */
+.timeline-content {
+  width: 68%;
+  max-width: 68%;
+  min-width: 68%;
+  flex-shrink: 0;          /* ⬅ IMPORTANT */
+  box-sizing: border-box;
+  text-align: justify;
+}
+
+/* Reverse rows */
+.timeline-row.reverse {
+  flex-direction: row-reverse;
+}
+
+.timeline-row.reverse .timeline-title {
+  text-align: right;
+}
+
+/* =========================================
+   MOBILE – STACKED (NO OVERFLOW)
+   ========================================= */
+@media (max-width: 768px) {
+  .timeline-row,
+  .timeline-row.reverse {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .timeline-title,
+  .timeline-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    text-align: justify;
+  }
+
+  .timeline-title {
+    text-align: left;
+  }
+}
+/* ==================================================
+   GLOBAL MOBILE SAFETY
+   ================================================== */
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ==================================================
+   TYPOGRAPHY – MOBILE SCALE
+   ================================================== */
+@media (max-width: 768px) {
+
+  body {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: 32px;
+    line-height: 1.15;
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  h3 {
+    font-size: 20px;
+  }
+
+  h4 {
+    font-size: 18px;
+  }
+}
+
+/* ==================================================
+   HEADER & NAVBAR
+   ================================================== */
+@media (max-width: 768px) {
+
+  .navbar {
+    height: auto;
+    padding: 14px 0;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .logo img {
+    height: 38px;
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .nav a {
+    margin: 0;
+    font-size: 14px;
+  }
+}
+
+/* ==================================================
+   HERO SECTION
+   ================================================== */
+@media (max-width: 768px) {
+
+  .hero {
+    min-height: auto;
+    padding: 120px 0 80px;
+    text-align: center;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .primary-btn {
+    padding: 12px 22px;
+    font-size: 14px;
+  }
+}
+
+/* ==================================================
+   GRID SECTIONS (ENABLE, SERVICES, WHY US)
+   ================================================== */
+@media (max-width: 768px) {
+
+  .interactive-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .interactive-card {
+    padding: 22px;
+  }
+}
+
+/* ==================================================
+   WHY US – BUILD OPERATE TRANSFER AUDIT
+   ================================================== */
+@media (max-width: 768px) {
+
+  #Why\ Us .interactive-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #Why\ Us .interactive-card {
+    min-height: auto;
+  }
+}
+
+/* ==================================================
+   LET’S INTROSPECT – QUESTIONS
+   ================================================== */
+@media (max-width: 768px) {
+
+  .tabs {
+    justify-content: center;
+  }
+
+  .tab {
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+
+  .question label {
+    display: block;
+    margin: 8px 0;
+  }
+}
+
+/* ==================================================
+   CLIENT LOGOS – HORIZONTAL SCROLL
+   ================================================== */
+@media (max-width: 768px) {
+
+  .logo-strip {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding-bottom: 12px;
+  }
+
+  .logo-box {
+    min-width: 120px;
+    height: 70px;
+    flex-shrink: 0;
+  }
+}
+
+/* ==================================================
+   SERVICES PAGE TIMELINE – STACKED
+   ================================================== */
+@media (max-width: 768px) {
+
+  .timeline-row,
+  .timeline-row.reverse {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .timeline-title,
+  .timeline-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    text-align: justify;
+  }
+
+  .timeline-title {
+    font-size: 18px;
+  }
+}
+
+/* ==================================================
+   CONNECT & FOOTER
+   ================================================== */
+@media (max-width: 768px) {
+
+  .footer-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  input,
+  button {
+    width: 100%;
+  }
+}
+
