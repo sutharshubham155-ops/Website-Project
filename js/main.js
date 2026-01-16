@@ -179,25 +179,24 @@ document.addEventListener("DOMContentLoaded", () => {
     finalForm.classList.add("hidden");
     scorecard.classList.remove("hidden");
 
-    sendToGoogleSheet();
+    sendToGoogleSheet(percentage);
   };
 
 });
 
 /* ========= GOOGLE SHEET (NO-CORS SAFE) ========= */
-function sendToGoogleSheet() {
-  fetch(
-    "https://script.google.com/macros/s/AKfycbzDQYJYJEqUAfNYjSOwdnKQlaQh0VgTW6QWg2vstgvbE5rRIihXzzgf6NVJfuZ5Bcc-WQ/exec",
-    {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({
-        email: document.getElementById("userEmail").value,
-        answers,
-        timestamp: new Date().toISOString()
-      })
-    }
-  );
+function sendToGoogleSheet(finalScore) {
 
-  console.log("Assessment submitted");
+  fetch("https://script.google.com/macros/s/AKfycbyCNRc-9T-AdVnyQEQg52jl01LIB7J1ZIb08UJyeomIh0IYkoUI9YzYJY8sgB-5Wh44Bw/exec", {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({
+      email: document.getElementById("userEmail").value,
+      answers: answers,
+      score: finalScore,
+      timestamp: new Date().toISOString()
+    })
+  });
+
+  console.log("Assessment submitted successfully");
 }
