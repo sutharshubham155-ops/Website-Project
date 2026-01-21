@@ -200,3 +200,17 @@ function sendToGoogleSheet(finalScore) {
 
   console.log("Assessment submitted successfully");
 }
+// BOTA Hover Content Switch
+document.querySelectorAll(".bota-box").forEach(box => {
+  box.addEventListener("mouseenter", () => {
+
+    const target = box.dataset.content;
+
+    document.querySelectorAll(".bota-text").forEach(txt => {
+      txt.style.display = "none";
+    });
+
+    document.getElementById(target).style.display = "block";
+
+  });
+});

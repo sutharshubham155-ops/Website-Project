@@ -1321,4 +1321,121 @@ html {
     text-align: left !important;
   }
 }
+/* =========================================
+   SERVICE PAGE — TITLE CENTER + SIZE UP
+   ========================================= */
 
+/* Center ALL service titles */
+.timeline-title {
+  text-align: center !important;
+  font-size: 30px !important;   /* slight increase */
+}
+
+/* Force ALL service content justified */
+.timeline-content,
+.timeline-content p {
+  text-align: justify !important;
+}
+
+
+/* =========================================
+   BOTA — FORCE SINGLE ROW (DESKTOP)
+   ========================================= */
+
+#Why\ Us .interactive-grid,
+.bota-grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  #Why\ Us .interactive-grid,
+  .bota-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  #Why\ Us .interactive-grid,
+  .bota-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+/* ===============================
+   SERVICES ZIG-ZAG FIX
+   =============================== */
+
+/* Odd rows (default) */
+.timeline-row:not(.reverse) .timeline-title {
+  text-align: center !important;
+}
+
+.timeline-row:not(.reverse) .timeline-content {
+  text-align: justify !important;
+}
+
+/* Even rows (reverse) */
+.timeline-row.reverse .timeline-title {
+  text-align: center !important;
+}
+
+.timeline-row.reverse .timeline-content {
+  text-align: justify !important;
+}
+/* ===============================
+   BOTA POPUP UI POLISH
+   =============================== */
+
+.bota-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Title spacing */
+.bota-card h4 {
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+/* Popup container */
+.bota-card .card-detail {
+  margin-top: 10px;
+  padding: 14px 12px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+
+  opacity: 0;
+  max-height: 0;
+  transform: translateY(10px);
+
+  transition: all 0.35s ease;
+}
+
+/* Text inside popup */
+.bota-card .card-detail p {
+  margin: 8px 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* Hover open animation */
+.bota-card:hover .card-detail {
+  opacity: 1;
+  max-height: 260px;
+  transform: translateY(0);
+}
+
+/* Card hover polish */
+.bota-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 22px 40px rgba(0,0,0,0.14);
+}
+
+/* Dark card popup text fix */
+#Why\ Us .bota-card:nth-child(even) .card-detail {
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+#Why\ Us .bota-card:nth-child(even) .card-detail p {
+  color: #e0e7ff;
+}
