@@ -200,17 +200,25 @@ function sendToGoogleSheet(finalScore) {
 
   console.log("Assessment submitted successfully");
 }
-// BOTA Hover Content Switch
-document.querySelectorAll(".bota-box").forEach(box => {
-  box.addEventListener("mouseenter", () => {
+// BOTA Hover Panel Logic
 
-    const target = box.dataset.content;
+const botaCards = document.querySelectorAll(".bota-card");
+const botaContents = document.querySelectorAll(".bota-content");
 
-    document.querySelectorAll(".bota-text").forEach(txt => {
-      txt.style.display = "none";
+botaCards.forEach(card => {
+
+  card.addEventListener("mouseenter", () => {
+
+    const target = card.dataset.target;
+
+    // Hide all
+    botaContents.forEach(content => {
+      content.style.display = "none";
     });
 
+    // Show selected
     document.getElementById(target).style.display = "block";
 
   });
+
 });

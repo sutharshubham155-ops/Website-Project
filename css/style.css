@@ -1439,3 +1439,72 @@ html {
 #Why\ Us .bota-card:nth-child(even) .card-detail p {
   color: #e0e7ff;
 }
+/* ===============================
+   BOTA SLIDE STYLE OUTPUT PANEL
+   =============================== */
+
+/* Force 4 boxes in one row */
+.bota-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* BOTA Cards */
+.bota-card {
+  cursor: pointer;
+  padding: 22px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.bota-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Output container */
+.bota-output {
+  margin-top: 40px;
+  padding: 26px;
+  background: #f6f8fc;
+  border-radius: 16px;
+  min-height: 140px;
+}
+
+/* Hide all content */
+.bota-content {
+  display: none;
+  animation: fadeSlide .3s ease;
+}
+
+/* Text style */
+.bota-content p {
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 8px 0;
+}
+
+/* Animation */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile */
+@media(max-width:900px){
+  .bota-grid{
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media(max-width:500px){
+  .bota-grid{
+    grid-template-columns:1fr;
+  }
+}
