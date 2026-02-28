@@ -95,6 +95,33 @@ document.addEventListener("DOMContentLoaded", () => {
     ]
   };
 
+  /* ========= RESULT MESSAGES (FROM EXCEL: Final Result Reply) ========= */
+  const resultBands = [
+    { min: 0,  max: 20,  range: "0% – 20%",   category: "Founder Survival Stage",
+      message: "Business depends heavily on the owner.\nSystems need to be built." },
+    { min: 21, max: 40,  range: "21% – 40%",  category: "Reactive Organization",
+      message: "Structure exists, but execution is inconsistent." },
+    { min: 41, max: 60,  range: "41% – 60%",  category: "Developing Structure",
+      message: "Stability present, but alignment gaps slow growth." },
+    { min: 61, max: 75,  range: "61% – 75%",  category: "Controlled but Stretched",
+      message: "Business is stable, but leadership bandwidth limits growth." },
+    { min: 76, max: 90,  range: "76% – 90%",  category: "Structured & Scalable",
+      message: "Strong systems in place.\nFocus now on optimization." },
+    { min: 91, max: 100, range: "91% – 100%", category: "Institutionalized Enterprise",
+      message: "System-driven business ready for expansion and valuation growth." }
+  ];
+
+  function getResultBand(pct) {
+    return resultBands.find(b => pct >= b.min && pct <= b.max) || null;
+  }
+
+  function getQuestionOffset(cat) {
+    const catIndex = order.indexOf(cat);
+    let offset = 0;
+    for (let j = 0; j < catIndex; j++) offset += data[order[j]].length;
+    return offset;
+  }
+
   const questionsDiv = document.getElementById("questions");
   const tabs = document.querySelectorAll(".tab");
   const questionForm = document.getElementById("questionForm");
@@ -103,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderCategory(cat) {
     questionsDiv.innerHTML = "";
-    let qNo = 1;
+    let qNo = getQuestionOffset(cat) + 1;
 
     data[cat].forEach((item, idx) => {
       const name = `${cat}-${idx}`;
@@ -175,6 +202,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const percentage = Math.round((totalScore / maxScore) * 100);
 
     document.getElementById("finalScore").innerText = percentage + "%";
+
+    // Show message (category + short reply) based on score range
+    const band = getResultBand(percentage);
+    if (band) {
+      let msgBox = document.getElementById("resultMessage");
+      if (!msgBox) {
+        msgBox = document.createElement("div");
+        msgBox.id = "resultMessage";
+        msgBox.style.marginTop = "14px";
+        msgBox.style.fontSize = "16px";
+        msgBox.style.lineHeight = "1.6";
+        scorecard.appendChild(msgBox);
+      }
+      const safeMsg = band.message.replace(/\n/g, "<br>");
+      msgBox.innerHTML = `<div><strong>${band.range}</strong> — <strong>${band.category}</strong></div><div style="margin-top:6px">${safeMsg}</div>`;
+    }
 
     finalForm.classList.add("hidden");
     scorecard.classList.remove("hidden");
