@@ -1510,70 +1510,101 @@ html {
 }
 
 
-/* ==================================================
-   MOBILE POLISH (added)
-   Only overrides for small screens — desktop unchanged
-   ================================================== */
-*{box-sizing:border-box;}
 
-@media (max-width: 600px){
-  .container{padding:0 16px !important;}
-  .section{padding:72px 0 !important;}
-  .hero{padding:120px 0 64px !important; min-height:auto !important;}
-  .hero h1{font-size:30px !important; line-height:1.15 !important;}
-  .hero p{font-size:15px !important;}
+/* =========================================================
+   SCORECARD LAYOUT + SPACING POLISH (added)
+   ========================================================= */
 
-  /* Header/nav: avoid cramped links */
-  .navbar{padding:12px 0 !important;}
-  .nav{gap:10px !important;}
-  .nav a{
-    font-size:13px !important;
-    padding:6px 10px !important;
-    margin:0 !important;
-    border:1px solid #e5e7f0;
-    border-radius:999px;
+.scorecard{
+  text-align:left;
+}
+
+.scorecard-main-title{
+  text-align:center;
+  margin:0 0 16px 0;
+  letter-spacing:.2px;
+}
+
+.scorecard-box{
+  background:linear-gradient(180deg,#ffffff,#f3f6fb);
+  border:1px solid rgba(0,0,0,.06);
+  border-radius:16px;
+  padding:18px 18px 16px;
+  max-width:640px;
+  margin:0 auto 18px auto;
+  box-shadow:0 10px 24px rgba(0,0,0,.06);
+  text-align:center;
+}
+
+.scorecard-box-title{
+  font-weight:600;
+  opacity:.85;
+  margin-bottom:10px;
+}
+
+.scorecard-columns{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap:18px;
+  align-items:start;
+  margin-top:6px;
+}
+
+.scorecard-col h3{
+  margin:0 0 10px 0;
+  font-size:20px;
+  letter-spacing:.2px;
+}
+
+.scorecard-short-reply{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.06);
+  border-radius:14px;
+  padding:14px 14px;
+  line-height:1.5;
+  font-weight:600;
+  color:#0b1b3a;
+  box-shadow:0 10px 24px rgba(0,0,0,.05);
+}
+
+.scorecard-list{
+  margin:0;
+  padding-left:18px;
+  line-height:1.55;
+}
+
+.scorecard-list li{
+  margin:8px 0;
+}
+
+/* Better text rhythm across site (light touch) */
+.section p{
+  line-height:1.7;
+}
+
+.section h2{
+  line-height:1.25;
+}
+
+/* MOBILE: prevent hero from looking “half”, and stack score columns nicely */
+@media (max-width: 768px){
+  .hero{
+    min-height:auto;
+    padding:84px 0 64px;
+    align-items:flex-start;
   }
 
-  /* Cards */
-  .card{padding:18px !important; border-radius:14px !important;}
-  .interactive-card{padding:18px !important;}
-  .interactive-card:hover,
-  .interactive-card.active{
-    transform:none !important;            /* no zoom on touch */
+  .hero h1{
+    font-size:38px;
+    line-height:1.15;
   }
 
-  /* Introspect tabs: wrap nicely */
-  .tabs{
-    flex-wrap:wrap !important;
-    overflow-x:visible !important;
-    justify-content:flex-start !important;
-    gap:10px !important;
-  }
-  .tabs .tab{
-    font-size:13px !important;
-    padding:10px 14px !important;
-    min-width:0 !important;
-    flex:1 1 auto;
+  .scorecard-columns{
+    grid-template-columns:1fr;
+    gap:14px;
   }
 
-  /* Questions/options: prevent squishing */
-  .question label{
-    flex-wrap:wrap !important;
-    align-items:flex-start !important;
-    justify-content:flex-start !important;
-    gap:10px !important;
+  .scorecard-box{
+    padding:16px;
   }
-  .question input[type="radio"]{
-    margin-top:3px !important;
-  }
-
-  /* Forms */
-  input, button{
-    width:100% !important;
-    max-width:100% !important;
-  }
-
-  /* Footer spacing */
-  .footer-inner{gap:12px !important; padding:0 16px;}
-  .footer > div{padding:12px 16px; text-align:center;}
 }

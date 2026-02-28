@@ -5,9 +5,132 @@
 /* ========= GLOBAL STATE ========= */
 let answers = {};
 
+/* ========= RESULT BANDS (from Excel: Final Result Reply) ========= */
+const RESULT_BANDS = [
+  {
+    min: 0, max: 20,
+    shortReply: "Business depends heavily on the owner.\nSystems need to be built.",
+    currentStatusTitle: "What Is Stopping Your Growth",
+    currentStatus: "Your business runs mainly on your personal effort.\nMost decisions depend on you.\nRoles are unclear, systems are weak, and daily operations are handled reactively.\nIf you try to grow now, problems will multiply.",
+    actionPlanTitle: "Foundation Building Plan",
+    keyActions: "Define clear roles and responsibilities.\nDocumenting the key processes.\nSet weekly review meetings.\nCreate basic performance tracking.\nReduce day-to-day owner dependency."
+  },
+  {
+    min: 21, max: 40,
+    shortReply: "Structure exists, but execution is inconsistent.",
+    currentStatusTitle: "Where Stability Is Missing",
+    currentStatus: "Some structure exists, but it is not followed consistently.\nWork gets done, but accountability and tracking are weak.\nGrowth creates pressure because systems are not strong enough to support it.",
+    actionPlanTitle: "Discipline & Control Plan",
+    keyActions: "Standardize SOPs.\nIntroduce simple KPI dashboards.\nFix accountability gaps.\nEstablish monthly performance reviews."
+  },
+  {
+    min: 41, max: 60,
+    shortReply: "Stability present, but alignment gaps slow growth.",
+    currentStatusTitle: "Where Alignment Is Required",
+    currentStatus: "Departments are functioning, but alignment between teams is weak.\nProcesses exist, yet results vary.\nGrowth is possible, but internal coordination needs strengthening.",
+    actionPlanTitle: "Alignment & Governance Plan",
+    keyActions: "Align department goals.\nStrengthen reporting systems.\nImprove cross-team communication.\nIntroduce structured management reviews."
+  },
+  {
+    min: 61, max: 75,
+    shortReply: "Business is stable, but leadership bandwidth limits growth.",
+    currentStatusTitle: "What Is Limiting Scale",
+    currentStatus: "Operations are stable and systems are working.\nHowever, growth still depends on leadership involvement.\nMiddle management may not be fully empowered.\nScaling requires delegation and stronger management depth.",
+    actionPlanTitle: "Delegation & System Strengthening Plan",
+    keyActions: "Define decision authority levels.\nDevelop second-line leaders.\nStrengthen performance management.\nAutomate routine reporting."
+  },
+  {
+    min: 76, max: 90,
+    shortReply: "Strong systems in place.\nFocus now on optimization.",
+    currentStatusTitle: "Where Growth Can Accelerate",
+    currentStatus: "Strong systems and controls are in place.\nOwner dependency is low.\nThe business is ready to optimize margins, improve efficiency, and expand strategically.",
+    actionPlanTitle: "Optimization & Expansion Plan",
+    keyActions: "Improve process efficiency.\nControl costs.\nStrengthen strategic planning.\nBuild expansion roadmap."
+  },
+  {
+    min: 91, max: 100,
+    shortReply: "System-driven business ready for expansion and valuation growth.",
+    currentStatusTitle: "Your Strategic Position",
+    currentStatus: "The business runs on systems, not individuals.\nPerformance is measurable and predictable.\nThe focus now shifts to innovation, expansion, and long-term enterprise value creation.",
+    actionPlanTitle: "Enterprise Growth Roadmap",
+    keyActions: "Enter new markets.\nStrengthen leadership bench.\nBuild innovation systems.\nPrepare valuation and long-term growth strategy."
+  }
+];
+
+function pickResultBand(pct){
+  return RESULT_BANDS.find(b => pct >= b.min && pct <= b.max) || RESULT_BANDS[0];
+}
+
+function fillList(el, text){
+  if (!el) return;
+  const lines = String(text || "").split("\n").map(s => s.trim()).filter(Boolean);
+  el.innerHTML = lines.map(l => `<li>${escapeHtml(l)}</li>`).join("");
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+
+/* ========= QUESTION DATA ========= */
+const data = {
+    structure: [
+      { q:"Do you have a clear, well-defined organizational structure with documented roles and accountability?", w:1.2,
+        options:["Well-defined & documented structure, roles & JDs","Partially defined structure & roles / JDs","No clear structure or JDs"] },
+      { q:"Is there a structured and effective communication & reporting mechanism across departments?", w:1,
+        options:["Structured & consistent","Informal but works","No clarity"] },
+      { q:"How are day-to-day operational decisions taken in the organization?", w:1.1,
+        options:["Delegated & system-driven","Mixed / partially centralized","Highly centralized / unclear"] }
+    ],
+    people: [
+      { q:"Are employees clearly aware of their growth path and career progression?", w:1,
+        options:["Clear growth roadmap","Some clarity","No clarity"] },
+      { q:"Do you have a strong and identifiable team of A-grade performers?", w:1.2,
+        options:["Strong A-grade team","Average performers","Weak performance culture"] },
+      { q:"How frequently do you engage your team in capability building and brainstorming sessions?", w:0.8,
+        options:["Weekly / Monthly","Quarterly","Rare / Never"] }
+    ],
+    performance: [
+      { q:"Does each employee contribute meaningfully to organizational growth in a measurable way?", w:1.2,
+        options:["Measured & consistent","Inconsistent measurement","Not measured"] },
+      { q:"Do you have a defined and structured performance evaluation system?", w:1.3,
+        options:["Defined PMS with periodic appraisals","Informal / irregular reviews","No evaluation system"] },
+      { q:"Do you track employee-wise profitability or productivity regularly?", w:1.1,
+        options:["Tracked regularly","Tracked sometimes","Not tracked"] }
+    ],
+    strategy: [
+      { q:"How clearly is the organizational vision defined and communicated?", w:1.2,
+        options:["3+ years clear vision","1–2 years basic vision","No vision"] },
+      { q:"To what extent are employees aligned with the organizational vision?", w:1,
+        options:["Fully aligned workforce","Partially aligned","Not aligned"] },
+      { q:"Do you have a clear 360° action-oriented strategic plan?", w:1.3,
+        options:["Clear 360° plan","Partial plan","No plan"] },
+      { q:"How structured is your approach to strategy planning for the upcoming quarter/year?", w:1.1,
+        options:["Planned with clear timelines","Roughly planned","Not planned"] }
+    ],
+    process: [
+      { q:"Do you have well-defined SOPs for all critical departments?", w:1.3,
+        options:["Defined for all departments","Defined for few","No SOPs"] },
+      { q:"Do you conduct regular process audits to ensure adherence and improvement?", w:1.2,
+        options:["Regular audits","Occasional audits","No audits"] }
+    ]
+  };
+
 document.addEventListener("DOMContentLoaded", () => {
 
   console.log("main.js loaded");
+
+  /* ========= CATEGORY ORDER (for continuous question numbering) ========= */
+  const catOrder = ["structure","people","performance","strategy","process"];
+  const catStart = {};
+  let running = 1;
+  catOrder.forEach(c => { catStart[c] = running; running += (data[c] ? data[c].length : 0); });
 
   /* ========= SECTION FADE-IN ========= */
   const sections = document.querySelectorAll(".section");
@@ -52,75 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
   const order = ["structure", "people", "performance", "strategy", "process"];
 
-  const data = {
-    structure: [
-      { q:"Do you have a clear, well-defined organizational structure with documented roles and accountability?", w:1.2,
-        options:["Well-defined & documented structure, roles & JDs","Partially defined structure & roles / JDs","No clear structure or JDs"] },
-      { q:"Is there a structured and effective communication & reporting mechanism across departments?", w:1,
-        options:["Structured & consistent","Informal but works","No clarity"] },
-      { q:"How are day-to-day operational decisions taken in the organization?", w:1.1,
-        options:["Delegated & system-driven","Mixed / partially centralized","Highly centralized / unclear"] }
-    ],
-    people: [
-      { q:"Are employees clearly aware of their growth path and career progression?", w:1,
-        options:["Clear growth roadmap","Some clarity","No clarity"] },
-      { q:"Do you have a strong and identifiable team of A-grade performers?", w:1.2,
-        options:["Strong A-grade team","Average performers","Weak performance culture"] },
-      { q:"How frequently do you engage your team in capability building and brainstorming sessions?", w:0.8,
-        options:["Weekly / Monthly","Quarterly","Rare / Never"] }
-    ],
-    performance: [
-      { q:"Does each employee contribute meaningfully to organizational growth in a measurable way?", w:1.2,
-        options:["Measured & consistent","Inconsistent measurement","Not measured"] },
-      { q:"Do you have a defined and structured performance evaluation system?", w:1.3,
-        options:["Defined PMS with periodic appraisals","Informal / irregular reviews","No evaluation system"] },
-      { q:"Do you track employee-wise profitability or productivity regularly?", w:1.1,
-        options:["Tracked regularly","Tracked sometimes","Not tracked"] }
-    ],
-    strategy: [
-      { q:"How clearly is the organizational vision defined and communicated?", w:1.2,
-        options:["3+ years clear vision","1–2 years basic vision","No vision"] },
-      { q:"To what extent are employees aligned with the organizational vision?", w:1,
-        options:["Fully aligned workforce","Partially aligned","Not aligned"] },
-      { q:"Do you have a clear 360° action-oriented strategic plan?", w:1.3,
-        options:["Clear 360° plan","Partial plan","No plan"] },
-      { q:"How structured is your approach to strategy planning for the upcoming quarter/year?", w:1.1,
-        options:["Planned with clear timelines","Roughly planned","Not planned"] }
-    ],
-    process: [
-      { q:"Do you have well-defined SOPs for all critical departments?", w:1.3,
-        options:["Defined for all departments","Defined for few","No SOPs"] },
-      { q:"Do you conduct regular process audits to ensure adherence and improvement?", w:1.2,
-        options:["Regular audits","Occasional audits","No audits"] }
-    ]
-  };
-
-  /* ========= RESULT MESSAGES (FROM EXCEL: Final Result Reply) ========= */
-  const resultBands = [
-    { min: 0,  max: 20,  range: "0% – 20%",   category: "Founder Survival Stage",
-      message: "Business depends heavily on the owner.\nSystems need to be built." },
-    { min: 21, max: 40,  range: "21% – 40%",  category: "Reactive Organization",
-      message: "Structure exists, but execution is inconsistent." },
-    { min: 41, max: 60,  range: "41% – 60%",  category: "Developing Structure",
-      message: "Stability present, but alignment gaps slow growth." },
-    { min: 61, max: 75,  range: "61% – 75%",  category: "Controlled but Stretched",
-      message: "Business is stable, but leadership bandwidth limits growth." },
-    { min: 76, max: 90,  range: "76% – 90%",  category: "Structured & Scalable",
-      message: "Strong systems in place.\nFocus now on optimization." },
-    { min: 91, max: 100, range: "91% – 100%", category: "Institutionalized Enterprise",
-      message: "System-driven business ready for expansion and valuation growth." }
-  ];
-
-  function getResultBand(pct) {
-    return resultBands.find(b => pct >= b.min && pct <= b.max) || null;
-  }
-
-  function getQuestionOffset(cat) {
-    const catIndex = order.indexOf(cat);
-    let offset = 0;
-    for (let j = 0; j < catIndex; j++) offset += data[order[j]].length;
-    return offset;
-  }
+  
 
   const questionsDiv = document.getElementById("questions");
   const tabs = document.querySelectorAll(".tab");
@@ -130,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderCategory(cat) {
     questionsDiv.innerHTML = "";
-    let qNo = getQuestionOffset(cat) + 1;
+    let qNo = (catStart && catStart[cat]) ? catStart[cat] : 1;
 
     data[cat].forEach((item, idx) => {
       const name = `${cat}-${idx}`;
@@ -203,21 +258,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("finalScore").innerText = percentage + "%";
 
-    // Show message (category + short reply) based on score range
-    const band = getResultBand(percentage);
-    if (band) {
-      let msgBox = document.getElementById("resultMessage");
-      if (!msgBox) {
-        msgBox = document.createElement("div");
-        msgBox.id = "resultMessage";
-        msgBox.style.marginTop = "14px";
-        msgBox.style.fontSize = "16px";
-        msgBox.style.lineHeight = "1.6";
-        scorecard.appendChild(msgBox);
-      }
-      const safeMsg = band.message.replace(/\n/g, "<br>");
-      msgBox.innerHTML = `<div><strong>${band.range}</strong> — <strong>${band.category}</strong></div><div style="margin-top:6px">${safeMsg}</div>`;
-    }
+    // Fill scorecard details (short reply + current status + action plan)
+    const band = pickResultBand(percentage);
+    const shortReplyEl = document.getElementById("shortReply");
+    if (shortReplyEl) shortReplyEl.innerHTML = escapeHtml(band.shortReply).replaceAll("\n","<br>");
+
+    const csTitleEl = document.getElementById("currentStatusTitle");
+    if (csTitleEl) csTitleEl.textContent = band.currentStatusTitle;
+    fillList(document.getElementById("currentStatusList"), band.currentStatus);
+
+    const apTitleEl = document.getElementById("actionPlanTitle");
+    if (apTitleEl) apTitleEl.textContent = band.actionPlanTitle;
+    fillList(document.getElementById("actionPlanList"), band.keyActions);
 
     finalForm.classList.add("hidden");
     scorecard.classList.remove("hidden");
